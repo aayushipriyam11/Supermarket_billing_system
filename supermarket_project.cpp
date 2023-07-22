@@ -331,7 +331,7 @@ void shop:: receipt()
                     dis=amount-(amount*dis/100);
                     total=total+dis;
                     cout<<"\n"<<pcode<<"\t\t"<<pname<<"\t\t"<<arrq[i]<<"\t\t"<<price<<"\t"<<amount<<"\t\t"<<dis;
-
+                    break;
 
                 }
                 data>>pcode>>pname>>price>>dis;
