@@ -336,8 +336,9 @@ void shop:: receipt()
                 }
                 data>>pcode>>pname>>price>>dis;
             }
-        }
+        
         data.close();
+        }
     }
     cout<<"\n\n";
     cout<<"\t\t Total amount= "<<total;
