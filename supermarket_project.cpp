@@ -1,4 +1,5 @@
 #include<iostream>
+#include<bits/stdc++.h>
 #include<fstream>
 using namespace std;
  class shop
@@ -88,7 +89,7 @@ void shop:: buyer()
 {
     m:
     int ch;
-    cout<<" Buyer\n\n";
+    cout<<"\t  Buyer\n\n";
      cout<< "\t 1) Buy the product\n\t 2)Go back"<<endl; 
     cout<<"Please enter your choice"<<endl;
     cin>>ch;
@@ -99,7 +100,6 @@ void shop:: buyer()
                break;
         case 2:
                menu();
-               break;
         default:
                 cout<<"Invalid choice";
     }
@@ -117,11 +117,11 @@ void shop:: add()
      cout<<"\n\n\t\t Add new product";
      cout<<"\n\n\tProduct code of the product :";
      cin>>pcode;
-     cout<<"\n\tName of the product :";
+     cout<<"\tName of the product :";
      cin>>pname;
-     cout<<"\n\tPrice of the product :";
+     cout<<"\tPrice of the product :";
      cin>>price;
-     cout<<"\n\tDiscount on the product :";
+     cout<<"\tDiscount on the product :";
      cin>>dis;
 
      data.open("productdatabase.txt",ios::in);
@@ -155,7 +155,7 @@ void shop:: add()
 
      }
    }
-     cout<<"\n\n\t\t Record inserted";
+     cout<<"\n\n\t\t Record inserted"<<endl<<endl;
 }
 
 void shop::edit()
@@ -169,13 +169,13 @@ void shop::edit()
     string n;
 
     cout<<"\n\t\t\t Modify the record";
-    cout<<"\n\t\t\t Enter Product code: ";
+    cout<<"\n\t\t Enter Product code: ";
     cin>>pkey;
 
     data.open("productdatabase.txt",ios::in);
     if(!data)
     {
-        cout<<"\n\nfile dosen't exist!";
+        cout<<"\n\nfile dosen't exist!"<<endl<<endl;
     }
     else{
         data1.open("productdatabase1.txt",ios::app|ios::out);
@@ -186,14 +186,14 @@ void shop::edit()
             {
                 cout<<"\n\t\t Product new code: ";
                 cin>>c;
-                cout<<"\n\t\t Name of the product: ";
+                cout<<"\t\t Name of the product: ";
                 cin>>n;
-                cout<<"Price";
+                cout<<"\t\tPrice: ";
                 cin>>p;
-                cout<<"\n\t\t Discount: ";
+                cout<<"\t\t Discount: ";
                 cin>>d;
                 data1<<" "<<c<<" "<<n<<" "<<p<<" "<<d<<"\n";
-                cout<<"\n\n\t\t Record edited";
+                cout<<"\n\n\t\t Record edited"<<endl<<endl;
                 token++;
             }
             else{
@@ -205,11 +205,11 @@ void shop::edit()
         data.close();
         data1.close();
         remove("productdatabase.txt");
-        rename("productdatabase1.txt","productdatabse.txt");
+        rename("productdatabase1.txt","productdatabase.txt");
         
         if(token==0)
         {
-            cout<<"\n\nRecord not found ";
+            cout<<"\n\nRecord not found "<<endl<<endl;
         }
 
 
@@ -218,7 +218,7 @@ void shop::edit()
 
 void shop::rem()
 {
-    fstream data,data1;
+    fstream data,data1,data2;
     int pkey;
     int token=0;
     cout<<"\n\n\t Delete product";
@@ -227,15 +227,17 @@ void shop::rem()
     data.open("productdatabase.txt",ios::in);
     if(!data)
     {
-        cout<<"File dosen't exist";
+        cout<<"File dosen't exist"<<endl;
     }
     else{
-        data1.open("productdatabase1.txt",ios::app|ios::out);
+        data1.open("productdatabase1.txt",ios::out);
+        data2.open("deleteddatabase.txt",ios::app|ios::out);
         data>>pcode>>pname>>price>>dis;
         while(!data.eof())
         {
             if(pcode==pkey){
-              cout<<"\n\n\t Product deleted successfully";
+              cout<<"\n\n\t Product deleted successfully"<<endl<<endl;
+              data2<<" "<<pcode<<" "<<pname<<" "<<price<<" "<<dis<<"\n";
               token++;
             }
             else{
@@ -246,12 +248,14 @@ void shop::rem()
         }
     data.close();
     data1.close();
+    data2.close();
     remove("productdatabase.txt");
+    remove("deleteddatabase.txt");
     rename("productdatabase1.txt","productdatabase.txt");
     
     if(token==0)
     {
-        cout<<"\n\n Record not found";
+        cout<<"\n\n Record not found"<<endl<<endl;
     }
 }
 }
@@ -261,12 +265,12 @@ void shop:: list()
     fstream data;
     data.open("productdatabase.txt",ios::in);
      cout<<"\n\n______________________________________________\n";
-     cout<< "ProNo\t\tName\t\tPrice\n";
+     cout<< "ProNo\t\tName\t\t\tPrice\n";
      cout<<"\n\n______________________________________________\n";
      data>>pcode>>pname>>price>>dis;
      while(!data.eof())
      {
-        cout<<pcode<<"\t\t"<<pname<<"\t\t"<<price<<"\n";
+        cout<<pcode<<"\t\t"<<pname<<"\t                        "<<price<<"\n";
         data>>pcode>>pname>>price>>dis;
      }
      data.close();
@@ -274,15 +278,15 @@ void shop:: list()
 void shop:: receipt()
 {
     fstream data;
-    int arrc[1000];
-    int arrq[1000];
+    vector<int> arrpc;
+    vector<int>arrq;
     char choice;
     int c=0;
-    float amount;
+    float amount=0;
     float dis=0;
     float total=0;
 
-    cout<<"\n\n\t\t\t\t RECEIPT";
+    cout<<"\n\n\t\tLIST";
     data.open("productdatabase.txt",ios::in);
     if(!data)
     {
@@ -292,56 +296,50 @@ void shop:: receipt()
     else{
         data.close();
         list();
-        cout<<"\n__________________________________________________\n";
-        cout<<"\n|                                                 \n";
-        cout<<"\n           Please place the order                 \n";
-        cout<<"\n|                                                 \n";
+        cout<<"\n__________________________________________________";
+        cout<<"\n|                                                |";
+        cout<<"\n           Please place the order                 ";
+        cout<<"\n|                                                |";
         cout<<"\n__________________________________________________\n";
         do{
 
-            m:
-            cout<<"\n\n Enter the product code: ";
-            cin>>arrc[c];
-            cout<<"\n\nEnter the product quantity: ";
-            cin>>arrq[c];
-            for(int i=0;i<c;i++)
-            {
-                if(arrc[c]==arrc[i])
-                {
-                    cout<<"\n\n Duplicate product code. please try again!";
-                    goto m;
-                }
-            }
-            c++;
-            cout<<"\n\n y-> To buy another product\nn-> To exit after calculating total bill";
+            int m,n;
+            cout<<"\n Enter the product code: ";
+            cin>>m;
+            arrpc.push_back(m);
+            cout<<" Enter the product quantity: ";
+            cin>>n;
+            arrq.push_back(n);
+            cout<<"\n\n y-> To buy another product\nn-> To exit after calculating total bill"<<endl;
             cin>>choice;
         }while (choice=='y');
         cout<<"\n\n                     RECEIPT                \n";
         cout<<"\nProduct No\t product Name\t product quantity\t price\t Amount\t Amount with discount\n";
 
-        for(int i=0;i<c;i++)
+        for(int i=0;i<arrpc.size();i++)
         {
-            data.open("productdatabase.txt",ios::in);
-            data>>pcode>>pname>>price>>dis;
-            while(!data.eof())
+            ifstream data1;
+            data1.open("productdatabase.txt",ios::in);
+
+            data1>>pcode>>pname>>price>>dis;
+            while(data1)
             {
-                if(pcode==arrc[i])
+                if(pcode==arrpc[i])
                 {
                     amount =price*arrq[i];
                     dis=amount-(amount*dis/100);
                     total=total+dis;
-                    cout<<"\n"<<pcode<<"\t\t"<<pname<<"\t\t"<<arrq[i]<<"\t\t"<<price<<"\t"<<amount<<"\t\t"<<dis;
+                    cout<<"\n"<<pcode<<"\t\t"<<pname<<"\t\t\t"<<arrq[i]<<"\t\t    "<<price<<"\t\t"<<amount<<"\t\t"<<dis;
                     break;
 
                 }
-                data>>pcode>>pname>>price>>dis;
-            }
-        
-        data.close();
+                data1>>pcode>>pname>>price>>dis;
+            }data1.close();
         }
+        data.close();
     }
     cout<<"\n\n";
-    cout<<"\t\t Total amount= "<<total;
+    cout<<"    Total amount= "<<total<<endl<<endl;
 
 }
 int main()
